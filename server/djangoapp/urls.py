@@ -19,7 +19,7 @@ urlpatterns = [
     # Path for add a review view
 
     path('logout/', view=views.logout_request, name='logout'),
-    path('get_cars/', view=views.get_cars, name='getcars'),
+    path('get_cars/', view=views.get_cars, name='getcars'),  # Added the get_cars path
     path('get_dealers/', view=views.get_dealerships, name='get_dealers'),
     path('get_dealers/<str:state>/',
          view=views.get_dealerships, name='get_dealers_by_state'),
