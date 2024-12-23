@@ -2,29 +2,30 @@
 from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
+from django.views.generic import TemplateView  # Added for serving React pages
 from . import views
 
 app_name = 'djangoapp'
+
 urlpatterns = [
-    # # path for registration
-    path(route='register', view=views.registration, name='register'),
+    # Path for registration - updated to serve the React page
+    path('register/', TemplateView.as_view(template_name="index.html"), name='register'),
 
+    # Path for login - updated to serve the React page
+    path('login/', TemplateView.as_view(template_name="index.html"), name='login'),
 
-    # path for login
-    path(route='login', view=views.login_user, name='login'),
+    # Path for dealer reviews view
 
-    # path for dealer reviews view
+    # Path for add a review view
 
-    # path for add a review view
-
-    path(route='logout', view=views.logout_request, name='logout'),
-    path(route='get_cars', view=views.get_cars, name='getcars'),
-    path(route='get_dealers/', view=views.get_dealerships, name='get_dealers'),
-    path(route='get_dealers/<str:state>',
+    path('logout/', view=views.logout_request, name='logout'),
+    path('get_cars/', view=views.get_cars, name='getcars'),
+    path('get_dealers/', view=views.get_dealerships, name='get_dealers'),
+    path('get_dealers/<str:state>/',
          view=views.get_dealerships, name='get_dealers_by_state'),
-    path(route='dealer/<int:dealer_id>',
+    path('dealer/<int:dealer_id>/',
          view=views.get_dealer_details, name='dealer_details'),
-    path(route='reviews/dealer/<int:dealer_id>',
+    path('reviews/dealer/<int:dealer_id>/',
          view=views.get_dealer_reviews, name='dealer_details'),
-    path(route='add_review', view=views.add_review, name='add_review'),
+    path('add_review/', view=views.add_review, name='add_review'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
