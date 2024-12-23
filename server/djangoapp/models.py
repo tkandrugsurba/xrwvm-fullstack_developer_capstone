@@ -1,53 +1,40 @@
-# Uncomment the following imports before adding the Model code
-
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 
-# <HINT> Create a Car Make model `class CarMake(models.Model)`:
-# - Name
-# - Description
-# - Any other fields you would like to include in car make model
-# - __str__ method to print a car make object
-
-
+# Car Make model
 class CarMake(models.Model):
+    name = models.CharField(max_length=100)  # Name of the car make
+    description = models.TextField()  # Description of the car make
 
-    name = models.CharField(max_length=100)
-
-    description = models.TextField()
-
+    # String representation of the CarMake model
     def __str__(self):
-        return str(self.id)
+        return self.name  # Return the car make's name
 
 
-# <HINT> Create a Car Model model `class CarModel(models.Model):`:
-# - Many-To-One relationship to Car Make model (One Car Make has many
-# Car Models, using ForeignKey field)
-# - Name
-# - Type (CharField with a choices argument to provide limited choices
-# such as Sedan, SUV, WAGON, etc.)
-# - Year (IntegerField) with min value 2015 and max value 2023
-# - Any other fields you would like to include in car model
-# - __str__ method to print a car make object
-
+# Car Model model
 class CarModel(models.Model):
-    car_make = models.ForeignKey(CarMake, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
+    # Many-to-One relationship to CarMake
+    car_make = models.ForeignKey(CarMake, on_delete=models.CASCADE)  
+    name = models.CharField(max_length=100)  # Name of the car model
 
+    # Define choices for car types
     CAR_TYPES = [
-        ('Sedan', 'Inbound'),
-        ('SUV', 'Outbound'),
-        ('WAGON', 'WAGON')
+        ('SEDAN', 'Sedan'),
+        ('SUV', 'SUV'),
+        ('WAGON', 'Wagon'),
     ]
 
-    types = models.CharField(max_length=100)
-    year = models.IntegerField(default=2023,
-                               validators=[
-                                MaxValueValidator(2023),
-                                MinValueValidator(2015)])
+    type = models.CharField(max_length=10, choices=CAR_TYPES, default='SUV')  # Car type
+    year = models.IntegerField(
+        default=2023,
+        validators=[
+            MaxValueValidator(2023),
+            MinValueValidator(2015)
+        ]
+    )  # Year of the car model
 
+    # String representation of the CarModel model
     def __str__(self):
-
-        return str(self.id)
+        return f"{self.car_make.name} {self.name} ({self.year})"  # Return car make name, model name, and year
